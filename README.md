@@ -50,7 +50,7 @@ A modern, responsive travel planning application built with React, TailwindCSS, 
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone "https://github.com/guru-vishal/roam-aura.git"
    cd travel-planner
    ```
 
