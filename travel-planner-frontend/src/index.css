@@ -1,0 +1,404 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Dark Mode Support */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: rgb(17, 24, 39) !important;
+  color: white;
+}
+
+/* Global dark mode overrides */
+html.dark * {
+  color: inherit;
+}
+
+html.dark .bg-white {
+  background-color: rgb(31, 41, 55) !important;
+  color: white !important;
+}
+
+html.dark .bg-gray-50 {
+  background-color: rgb(17, 24, 39) !important;
+}
+
+html.dark .bg-gray-100 {
+  background-color: rgb(31, 41, 55) !important;
+}
+
+html.dark .bg-blue-50 {
+  background-color: rgb(30, 41, 59) !important;
+}
+
+html.dark .bg-purple-50 {
+  background-color: rgb(46, 16, 101) !important;
+}
+
+html.dark .text-gray-600 {
+  color: rgb(209, 213, 219) !important;
+}
+
+html.dark .text-gray-700 {
+  color: rgb(156, 163, 175) !important;
+}
+
+html.dark .text-gray-800 {
+  color: rgb(229, 231, 235) !important;
+}
+
+html.dark .text-gray-900 {
+  color: rgb(243, 244, 246) !important;
+}
+
+html.dark .border-gray-200 {
+  border-color: rgb(75, 85, 99) !important;
+}
+
+html.dark .border-gray-300 {
+  border-color: rgb(107, 114, 128) !important;
+}
+
+/* Force dark mode on all pages */
+html.dark div[class*="bg-gradient-to-br from-blue-50"] {
+  background: linear-gradient(135deg, rgb(17, 24, 39) 0%, rgb(31, 41, 55) 50%, rgb(17, 24, 39) 100%) !important;
+}
+
+html.dark div[class*="bg-gradient-to-br from-blue-50 via-white to-purple-50"] {
+  background: linear-gradient(135deg, rgb(17, 24, 39) 0%, rgb(31, 41, 55) 50%, rgb(17, 24, 39) 100%) !important;
+}
+
+/* Enhanced Gradient Backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.dark .gradient-bg {
+  background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
+}
+
+/* Page-specific gradient backgrounds */
+.home-bg-light {
+  background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 20%, #f3e8ff 40%, #fce7f3 60%, #fef3c7 80%, #ecfdf5 100%);
+}
+
+.home-bg-dark {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 20%, #581c87 40%, #7c2d12 60%, #134e4a 80%, #1f2937 100%);
+}
+
+.profile-bg-light {
+  background: linear-gradient(135deg, #fce7f3 0%, #ddd6fe 50%, #bfdbfe 100%);
+}
+
+.profile-bg-dark {
+  background: linear-gradient(135deg, #831843 0%, #4c1d95 50%, #1e3a8a 100%);
+}
+
+.itinerary-bg-light {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 20%, #a5b4fc 40%, #c7d2fe 60%, #e0e7ff 80%, #f3e8ff 100%);
+}
+
+.itinerary-bg-dark {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 20%, #3730a3 40%, #4c1d95 60%, #5b21b6 80%, #6b21a8 100%);
+}
+
+/* Card backgrounds with attractive colors */
+.card-bg-light {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
+}
+
+.card-bg-dark {
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1);
+}
+
+/* Modal backgrounds */
+.modal-bg-light {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+}
+
+.modal-bg-dark {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+}
+
+/* Enhanced Navbar backgrounds */
+.navbar-bg-light {
+  background: linear-gradient(90deg, rgb(37, 99, 235) 0%, rgb(124, 58, 237) 30%, rgb(219, 39, 119) 70%, rgb(236, 72, 153) 100%);
+  backdrop-filter: blur(20px);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 12px 40px rgba(124, 58, 237, 0.4), 0 4px 20px rgba(37, 99, 235, 0.3);
+}
+
+.navbar-bg-dark {
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.95) 0%, rgba(88, 28, 135, 0.95) 50%, rgba(30, 41, 59, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-effect {
+  background: rgba(31, 41, 55, 0.3);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+}
+
+.dark .shadow-glow {
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(102, 126, 234, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: rgba(55, 65, 81, 0.5);
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #6b46c1 0%, #5a67d8 100%);
+}
+
+/* Enhanced button styles */
+.btn-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  transform: translateY(-2px);
+}
+
+.dark .btn-gradient {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  box-shadow: 0 4px 15px rgba(90, 103, 216, 0.3);
+}
+
+.dark .btn-gradient:hover {
+  background: linear-gradient(135deg, #6b46c1 0%, #5a67d8 100%);
+  box-shadow: 0 6px 20px rgba(90, 103, 216, 0.4);
+}
+
+/* Floating animation for hero elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.float-animation:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.float-animation:nth-child(3) {
+  animation-delay: 1s;
+}
+
+/* Glow effects for cards */
+.glow-on-hover {
+  transition: all 0.3s ease;
+}
+
+.glow-on-hover:hover {
+  box-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+}
+
+.dark .glow-on-hover:hover {
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+}
+
+/* Animated gradient text */
+.gradient-text-animated {
+  background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Custom Date Input Styling */
+input[type="date"] {
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 4px;
+  filter: invert(0.8) brightness(1.2);
+  transition: all 0.2s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+  transform: scale(1.1);
+}
+
+/* Dark mode date input styling */
+html.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.5);
+}
+
+html.dark input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  background-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Date input text color */
+input[type="date"]::-webkit-datetime-edit {
+  padding: 0;
+}
+
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+input[type="date"]::-webkit-datetime-edit-text {
+  padding: 0 0.3em;
+}
+
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  padding: 0 0.2em;
+}
+
+/* Remove default arrow on number inputs in date picker */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Custom Range Slider Styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border: 3px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+  transition: all 0.3s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.1);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border: 3px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+  transition: all 0.3s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+}
+
+/* Dark mode slider styling */
+html.dark input[type="range"]::-webkit-slider-thumb {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  border: 3px solid #1f2937;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.4);
+}
+
+html.dark input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.6);
+}
+
+html.dark input[type="range"]::-moz-range-thumb {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  border: 3px solid #1f2937;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.4);
+}
+
+html.dark input[type="range"]::-moz-range-thumb:hover {
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.6);
+}
