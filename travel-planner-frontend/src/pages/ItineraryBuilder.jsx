@@ -233,7 +233,7 @@ const ItineraryBuilder = () => {
       
       doc.text(`${startDate} - ${endDate}`, pageWidth / 2, yPos, { align: 'center' });
       yPos += 6;
-      doc.text(`${duration} Days | ${itinerary.travelers || 1} Traveler${(itinerary.travelers || 1) > 1 ? 's' : ''} | ${itinerary.budget || 'Moderate'} Budget`, pageWidth / 2, yPos, { align: 'center' });
+      doc.text(`${duration} Days | ${itinerary.travelers || 1} Traveler${(itinerary.travelers || 1) > 1 ? 's' : ''} | Budget: Rs.${itinerary.budget}`, pageWidth / 2, yPos, { align: 'center' });
       yPos += 10;
 
       // Interests
@@ -274,55 +274,105 @@ const ItineraryBuilder = () => {
         }
         yPos += 12;
 
-        // Places
-        if (day.places && day.places.length > 0) {
-          day.places.forEach((place, placeIndex) => {
-            // Check if we need a new page
-            if (yPos > 260) {
-              doc.addPage();
-              yPos = 20;
-            }
+        // Daily schedule with activities
+        const dailySchedule = [
+          { time: '06:30 AM', activity: 'Wake Up', isRoutine: true },
+          { time: '08:00 AM', activity: 'Breakfast', isRoutine: true },
+          { time: '09:00 AM', placeIndex: 0 },
+          { time: '11:00 AM', placeIndex: 1 },
+          { time: '12:30 PM', activity: 'Lunch', isRoutine: true },
+          { time: '02:00 PM', placeIndex: 2 },
+          { time: '04:00 PM', placeIndex: 3 },
+          { time: '06:00 PM', placeIndex: 4 },
+          { time: '08:00 PM', placeIndex: 5 },
+          { time: '09:00 PM', activity: 'Dinner', isRoutine: true },
+          { time: '10:00 PM', activity: 'Return to Hotel', isRoutine: true }
+        ];
 
-            doc.setFontSize(10);
-            doc.setTextColor(0, 0, 0);
-            
-            // Place name
+        // Render daily schedule
+        let itemNumber = 1;
+        dailySchedule.forEach((scheduleItem) => {
+          // Check if we need a new page
+          if (yPos > 260) {
+            doc.addPage();
+            yPos = 20;
+          }
+
+          doc.setFontSize(10);
+          doc.setTextColor(0, 0, 0);
+
+          if (scheduleItem.isRoutine) {
+            // Render routine activities (Wake Up, Breakfast, etc.) with numbering
             doc.setFont(undefined, 'bold');
-            doc.text(`${placeIndex + 1}. ${place.name}`, margin + 5, yPos);
-            yPos += 5;
+            doc.text(`${itemNumber}. ${scheduleItem.activity}`, margin + 5, yPos);
+            
+            // Display time on the right
+            doc.setFont(undefined, 'bold');
+            const timeWidth = doc.getTextWidth(scheduleItem.time);
+            doc.text(scheduleItem.time, pageWidth - margin - timeWidth - 5, yPos);
+            yPos += 8;
+            itemNumber++;
+          } else if (scheduleItem.placeIndex !== undefined && day.places && day.places[scheduleItem.placeIndex]) {
+            // Render place from itinerary
+            const place = day.places[scheduleItem.placeIndex];
+
+            // Place name with time on the right
+            doc.setFont(undefined, 'bold');
+            let placeName = `${itemNumber}. ${place.name}`;
+            doc.text(placeName, margin + 5, yPos);
+            
+            // Display time on the right side in bold
+            const timeWidth = doc.getTextWidth(scheduleItem.time);
+            doc.text(scheduleItem.time, pageWidth - margin - timeWidth - 5, yPos);
+            yPos += 7;
+            itemNumber++;
 
             // Place details
             doc.setFont(undefined, 'normal');
             doc.setFontSize(9);
             doc.setTextColor(100, 100, 100);
             
+            // Address
+            if (place.address) {
+              const addressLines = doc.splitTextToSize(`   ${place.address}`, pageWidth - 2 * margin - 10);
+              doc.text(addressLines, margin + 5, yPos);
+              yPos += addressLines.length * 4 + 2;
+            }
+            
+            // Rating
+            if (place.rating) {
+              doc.text(`   Rating: ${place.rating}/5`, margin + 5, yPos);
+              yPos += 6;
+            }
+            
             if (place.description) {
               const lines = doc.splitTextToSize(place.description, pageWidth - 2 * margin - 10);
               doc.text(lines, margin + 5, yPos);
-              yPos += lines.length * 4;
+              yPos += lines.length * 4 + 2;
             }
 
             if (place.duration) {
-              doc.text(`Duration: ${place.duration}`, margin + 5, yPos);
-              yPos += 4;
+              doc.text(`   Duration: ${place.duration}`, margin + 5, yPos);
+              yPos += 6;
             }
 
             if (place.bestTime) {
-              doc.text(`Best Time: ${place.bestTime}`, margin + 5, yPos);
-              yPos += 4;
+              doc.text(`   Best Time: ${place.bestTime}`, margin + 5, yPos);
+              yPos += 6;
             }
 
             if (place.tips) {
               doc.setTextColor(147, 51, 234);
-              doc.text(`Tip: ${place.tips}`, margin + 5, yPos);
-              yPos += 4;
+              doc.text(`   Tip: ${place.tips}`, margin + 5, yPos);
+              doc.setTextColor(100, 100, 100);
+              yPos += 6;
             }
 
-            yPos += 3;
-          });
-        }
+            yPos += 5;
+          }
+        });
 
-        yPos += 5;
+        yPos += 6;
       });
 
       // Footer
@@ -1157,6 +1207,18 @@ const ItineraryBuilder = () => {
                 <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {formatDate(selectedItinerary.startDate)} - {formatDate(selectedItinerary.endDate)}
                 </p>
+                {selectedItinerary.createdAt && (
+                  <p className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                    Created: {new Date(selectedItinerary.createdAt).toLocaleString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      hour12: true
+                    })}
+                  </p>
+                )}
               </div>
               <button
                 onClick={() => setSelectedItinerary(null)}
