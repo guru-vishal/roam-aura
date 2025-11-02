@@ -173,12 +173,17 @@ const Home = () => {
                 animate={{
                   y: [initialY, initialY - 20, initialY],
                   scale: [0.8, 1, 0.8],
-                  rotate: [0, 180, 360]
+                  rotate: 360
                 }}
                 transition={{
                   duration: 3 + Math.random() * 2,
                   repeat: Infinity,
-                  delay: 0
+                  delay: 0,
+                  rotate: {
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }
                 }}
               >
                 {i % 3 === 0 && <Plane className="w-8 h-8 text-white/30" />}
