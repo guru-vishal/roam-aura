@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
-import { MapPin, Mail, Phone, Facebook, MessageCircle, Instagram, Heart } from 'lucide-react';
+import { MapPin, Mail, Phone, Facebook, MessageCircle, Instagram, Heart, Plane } from 'lucide-react';
 
 const Footer = () => {
   const { isDark } = useTheme();
@@ -43,7 +43,7 @@ const Footer = () => {
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-full">
-                <MapPin className="w-6 h-6 text-white" />
+                <Plane className="w-6 h-6 text-white" />
               </div>
               <span className="text-2xl font-bold">RoamAura</span>
             </div>

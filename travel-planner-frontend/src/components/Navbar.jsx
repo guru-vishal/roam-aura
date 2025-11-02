@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Menu, X, MapPin, User, Calendar, Sun, Moon, Home, LogIn, LogOut } from 'lucide-react';
+import { Menu, X, MapPin, User, Calendar, Sun, Moon, Home, LogIn, LogOut, Plane } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import useToast from '../hooks/useToast';
@@ -61,7 +61,7 @@ const Navbar = () => {
               transition={{ duration: 0.5 }}
               className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-full"
             >
-              <MapPin className="w-6 h-6 text-white" />
+              <Plane className="w-6 h-6 text-white" />
             </motion.div>
             <span className="text-xl font-bold text-white">
               RoamAura

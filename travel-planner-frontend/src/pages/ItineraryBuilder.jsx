@@ -340,8 +340,9 @@ const ItineraryBuilder = () => {
             }
             
             // Rating
-            if (place.rating) {
-              doc.text(`   Rating: ${place.rating}/5`, margin + 5, yPos);
+            if (place.rating !== undefined && place.rating !== null) {
+              const ratingText = place.rating === 0 ? 'N/A' : `${place.rating}/5`;
+              doc.text(`   Rating: ${ratingText}`, margin + 5, yPos);
               yPos += 6;
             }
             
@@ -467,7 +468,7 @@ const ItineraryBuilder = () => {
               ? 'bg-gray-800/90 text-white border border-gray-700' 
               : 'bg-white/90 border border-gray-200'
           }`}>
-            <LogIn className="w-20 h-20 text-blue-500 mx-auto mb-6" />
+            <LogIn className={`w-20 h-20 mx-auto mb-6 ${isDark ? '!text-blue-400' : 'text-blue-500'}`} />
             <h1 className="text-3xl font-bold mb-4">Login Required</h1>
             <p className={`mb-8 text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               Please login to create and manage your travel itineraries.
@@ -579,7 +580,7 @@ const ItineraryBuilder = () => {
             
             {!userItineraries || userItineraries.length === 0 ? (
               <div className="text-center py-12">
-                <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <Calendar className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
                 <h3 className="text-xl font-semibold text-gray-600 mb-2">No itineraries yet</h3>
                 <p className="text-gray-500 mb-6">Create your first personalized travel plan!</p>
                 <motion.button
@@ -626,7 +627,7 @@ const ItineraryBuilder = () => {
                           }`}
                           title="Export PDF"
                         >
-                          <Download className="w-4 h-4" />
+                          <Download className={`w-4 h-4 ${isDark ? '!text-green-400' : '!text-green-600'}`} />
                         </motion.button>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
@@ -642,18 +643,18 @@ const ItineraryBuilder = () => {
                           }`}
                           title="Delete"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className={`w-4 h-4 ${isDark ? '!text-red-400' : '!text-red-500'}`} />
                         </motion.button>
                       </div>
                     </div>
                     
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center space-x-2">
-                        <Users className="w-4 h-4 text-gray-400" />
+                        <Users className={`w-4 h-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
                         <span>{itinerary.travelers} traveler{itinerary.travelers > 1 ? 's' : ''}</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Calendar className="w-4 h-4 text-gray-400" />
+                        <Calendar className={`w-4 h-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
                         <span>{itinerary.days?.length || 0} days planned</span>
                       </div>
                       <div className="flex flex-wrap gap-1 mt-2">
@@ -713,7 +714,7 @@ const ItineraryBuilder = () => {
                       <div className="destination-input-container">
                         <label className="block text-sm font-medium mb-2">Destination</label>
                         <div className="relative">
-                          <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 z-10" />
+                          <MapPin className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 z-10 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
                           <input
                             type="text"
                             name="destination"
@@ -743,7 +744,7 @@ const ItineraryBuilder = () => {
                             }`}>
                               {loadingCities ? (
                                 <div className="px-4 py-3 flex items-center justify-center">
-                                  <Loader className="w-5 h-5 animate-spin text-blue-500 mr-2" />
+                                  <Loader className={`w-5 h-5 animate-spin mr-2 ${isDark ? '!text-blue-400' : 'text-blue-500'}`} />
                                   <span className={isDark ? 'text-gray-300' : 'text-gray-600'}>
                                     Searching...
                                   </span>
@@ -759,7 +760,7 @@ const ItineraryBuilder = () => {
                                         : 'hover:bg-blue-50 text-gray-900'
                                     }`}
                                   >
-                                    <MapPin className="w-4 h-4 mr-2 text-blue-500 flex-shrink-0" />
+                                    <MapPin className={`w-4 h-4 mr-2 flex-shrink-0 ${isDark ? '!text-blue-400' : 'text-blue-500'}`} />
                                     <span className="text-sm">{city.description}</span>
                                   </div>
                                 ))
@@ -778,7 +779,7 @@ const ItineraryBuilder = () => {
                       <div>
                         <label className="block text-sm font-medium mb-2">Number of Travelers</label>
                         <div className="relative">
-                          <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                          <Users className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
                           <input
                             type="number"
                             name="travelers"
@@ -799,7 +800,7 @@ const ItineraryBuilder = () => {
                       <div>
                         <label className="block text-sm font-medium mb-2">Start Date</label>
                         <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                          <Calendar className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
                           <input
                             type="date"
                             name="startDate"
@@ -820,7 +821,7 @@ const ItineraryBuilder = () => {
                       <div>
                         <label className="block text-sm font-medium mb-2">End Date</label>
                         <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                          <Calendar className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
                           <input
                             type="date"
                             name="endDate"
@@ -1097,11 +1098,11 @@ const ItineraryBuilder = () => {
                                             {isPlaceActivity ? place.name : activityLabel.text}
                                           </h5>
                                         </div>
-                                        {isPlaceActivity && place.rating && (
+                                        {isPlaceActivity && place.rating !== undefined && place.rating !== null && (
                                           <div className="flex items-center space-x-1">
-                                            <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                            <Star className={`w-4 h-4 fill-current ${isDark ? '!text-yellow-400' : 'text-yellow-500'}`} />
                                             <span className={`text-sm ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
-                                              {place.rating}
+                                              {place.rating === 0 ? 'N/A' : place.rating}
                                             </span>
                                           </div>
                                         )}
@@ -1230,20 +1231,19 @@ const ItineraryBuilder = () => {
               </button>
             </div>
 
-            {/* Trip Info */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
               <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700' : 'bg-blue-50'}`}>
-                <Users className="w-5 h-5 text-blue-500 mb-2" />
+                <Users className={`w-5 h-5 mb-2 ${isDark ? '!text-blue-400' : 'text-blue-500'}`} />
                 <p className="text-sm opacity-70">Travelers</p>
                 <p className="text-lg font-semibold">{selectedItinerary.travelers}</p>
               </div>
               <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700' : 'bg-green-50'}`}>
-                <Calendar className="w-5 h-5 text-green-500 mb-2" />
+                <Calendar className={`w-5 h-5 mb-2 ${isDark ? '!text-green-400' : 'text-green-500'}`} />
                 <p className="text-sm opacity-70">Duration</p>
                 <p className="text-lg font-semibold">{selectedItinerary.days?.length || 0} days</p>
               </div>
               <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700' : 'bg-purple-50'}`}>
-                <Star className="w-5 h-5 text-purple-500 mb-2" />
+                <Star className={`w-5 h-5 mb-2 ${isDark ? '!text-purple-400' : 'text-purple-500'}`} />
                 <p className="text-sm opacity-70">Budget</p>
                 <p className="text-lg font-semibold">
                   ₹{selectedItinerary.budget ? selectedItinerary.budget.toLocaleString('en-IN') : 'N/A'}
@@ -1291,15 +1291,15 @@ const ItineraryBuilder = () => {
                     >
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="text-lg font-semibold flex items-center">
-                          <Calendar className="w-5 h-5 mr-2 text-blue-500" />
+                          <Calendar className={`w-5 h-5 mr-2 ${isDark ? '!text-blue-400' : 'text-blue-500'}`} />
                           Day {day.day} - {formatDate(day.date)}
                         </h4>
                         {day.weather && (
                           <div className="flex items-center space-x-2 text-sm">
-                            {day.weather.condition === 'sunny' && <Sun className="w-4 h-4 text-yellow-500" />}
-                            {day.weather.condition === 'cloudy' && <Cloud className="w-4 h-4 text-gray-400" />}
-                            {day.weather.condition === 'rainy' && <CloudRain className="w-4 h-4 text-blue-400" />}
-                            {day.weather.condition === 'snowy' && <CloudSnow className="w-4 h-4 text-blue-300" />}
+                            {day.weather.condition === 'sunny' && <Sun className={`w-4 h-4 ${isDark ? '!text-yellow-400' : 'text-yellow-500'}`} />}
+                            {day.weather.condition === 'cloudy' && <Cloud className={`w-4 h-4 ${isDark ? '!text-gray-400' : 'text-gray-500'}`} />}
+                            {day.weather.condition === 'rainy' && <CloudRain className={`w-4 h-4 ${isDark ? '!text-blue-300' : 'text-blue-400'}`} />}
+                            {day.weather.condition === 'snowy' && <CloudSnow className={`w-4 h-4 ${isDark ? '!text-blue-200' : 'text-blue-300'}`} />}
                             <span>{day.weather.temp}°C</span>
                           </div>
                         )}
@@ -1338,16 +1338,16 @@ const ItineraryBuilder = () => {
                                       </h5>
                                       {isPlaceActivity && place.address && (
                                         <p className={`text-sm flex items-start ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                                          <MapPin className="w-3 h-3 mr-1 mt-1 flex-shrink-0" />
+                                          <MapPin className={`w-3 h-3 mr-1 mt-1 flex-shrink-0 ${isDark ? '!text-blue-400' : 'text-blue-500'}`} />
                                           {place.address}
                                         </p>
                                       )}
                                     </div>
                                   </div>
-                                  {isPlaceActivity && place.rating && (
+                                  {isPlaceActivity && place.rating !== undefined && place.rating !== null && (
                                     <div className="flex items-center space-x-1 ml-2">
-                                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                                      <span className="text-sm font-medium">{place.rating}</span>
+                                      <Star className={`w-4 h-4 fill-current ${isDark ? '!text-yellow-400' : 'text-yellow-500'}`} />
+                                      <span className="text-sm font-medium">{place.rating === 0 ? 'N/A' : place.rating}</span>
                                     </div>
                                   )}
                                 </div>
@@ -1409,7 +1409,7 @@ const ItineraryBuilder = () => {
               <div className={`mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 ${
                 isDark ? 'bg-red-500/20' : 'bg-red-100'
               }`}>
-                <Trash2 className={`w-8 h-8 ${isDark ? 'text-red-400' : 'text-red-500'}`} />
+                <Trash2 className={`w-8 h-8 ${isDark ? '!text-red-400' : 'text-red-500'}`} />
               </div>
               <h3 className="text-2xl font-bold mb-2">Delete Itinerary?</h3>
               <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>

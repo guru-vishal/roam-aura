@@ -13,7 +13,7 @@ import {
   EyeOff, 
   ArrowRight,
   Loader,
-  MapPin
+  Plane
 } from 'lucide-react';
 
 const Login = () => {
@@ -92,7 +92,7 @@ const Login = () => {
             transition={{ duration: 0.5 }}
             className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4"
           >
-            <MapPin className="w-8 h-8 text-white" />
+            <Plane className="w-8 h-8 text-white" />
           </motion.div>
           
           <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>

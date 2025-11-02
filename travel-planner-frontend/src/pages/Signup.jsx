@@ -14,7 +14,7 @@ import {
   EyeOff, 
   ArrowRight,
   Loader,
-  MapPin,
+  Plane,
   Check
 } from 'lucide-react';
 
@@ -114,7 +114,7 @@ const Signup = () => {
             transition={{ duration: 0.5 }}
             className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full mb-3"
           >
-            <MapPin className="w-8 h-8 text-white" />
+            <Plane className="w-8 h-8 text-white" />
           </motion.div>
           
           <h1 className="text-3xl font-bold mb-2">Join RoamAura</h1>

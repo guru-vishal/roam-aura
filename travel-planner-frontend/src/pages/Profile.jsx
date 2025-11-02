@@ -81,7 +81,7 @@ const Profile = () => {
               ? 'bg-gray-800/90 text-white border border-gray-700' 
               : 'bg-white/90 border border-gray-200'
           }`}>
-            <LogIn className="w-20 h-20 text-blue-500 mx-auto mb-6" />
+            <LogIn className={`w-20 h-20 mx-auto mb-6 ${isDark ? '!text-blue-400' : 'text-blue-500'}`} />
             <h1 className="text-3xl font-bold mb-4">Login Required</h1>
             <p className={`mb-8 text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               Please login to access your profile and manage your travel plans.
@@ -317,18 +317,18 @@ const Profile = () => {
 
               {/* Trip Info */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-                <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700' : 'bg-blue-50'}`}>
-                  <Users className="w-5 h-5 text-blue-500 mb-2" />
-                  <p className="text-sm opacity-70">Travelers</p>
-                  <p className="text-lg font-semibold">{selectedItinerary.travelers}</p>
-                </div>
-                <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700' : 'bg-green-50'}`}>
-                  <Calendar className="w-5 h-5 text-green-500 mb-2" />
-                  <p className="text-sm opacity-70">Duration</p>
-                  <p className="text-lg font-semibold">{selectedItinerary.days?.length || 0} days</p>
-                </div>
-                <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700' : 'bg-purple-50'}`}>
-                  <Star className="w-5 h-5 text-purple-500 mb-2" />
+              <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700' : 'bg-blue-50'}`}>
+                <Users className={`w-5 h-5 mb-2 ${isDark ? '!text-blue-400' : 'text-blue-500'}`} />
+                <p className="text-sm opacity-70">Travelers</p>
+                <p className="text-lg font-semibold">{selectedItinerary.travelers}</p>
+              </div>
+              <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700' : 'bg-green-50'}`}>
+                <Calendar className={`w-5 h-5 mb-2 ${isDark ? '!text-green-400' : 'text-green-500'}`} />
+                <p className="text-sm opacity-70">Duration</p>
+                <p className="text-lg font-semibold">{selectedItinerary.days?.length || 0} days</p>
+              </div>
+              <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700' : 'bg-purple-50'}`}>
+                <Star className={`w-5 h-5 mb-2 ${isDark ? '!text-purple-400' : 'text-purple-500'}`} />
                   <p className="text-sm opacity-70">Budget</p>
                   <p className="text-lg font-semibold capitalize">
                     ₹{selectedItinerary.budget ? selectedItinerary.budget.toLocaleString('en-IN') : 'N/A'}
@@ -375,16 +375,16 @@ const Profile = () => {
                         }`}
                       >
                         <div className="flex items-center justify-between mb-4">
-                          <h4 className="text-lg font-semibold flex items-center">
-                            <Calendar className="w-5 h-5 mr-2 text-blue-500" />
-                            Day {day.day} - {formatDate(day.date)}
-                          </h4>
-                          {day.weather && (
-                            <div className="flex items-center space-x-2 text-sm">
-                              {day.weather.condition === 'sunny' && <Sun className="w-4 h-4 text-yellow-500" />}
-                              {day.weather.condition === 'cloudy' && <Cloud className="w-4 h-4 text-gray-400" />}
-                              {day.weather.condition === 'rainy' && <CloudRain className="w-4 h-4 text-blue-400" />}
-                              {day.weather.condition === 'snowy' && <CloudSnow className="w-4 h-4 text-blue-300" />}
+                        <h4 className="text-lg font-semibold flex items-center">
+                          <Calendar className={`w-5 h-5 mr-2 ${isDark ? '!text-blue-400' : 'text-blue-500'}`} />
+                          Day {day.day} - {formatDate(day.date)}
+                        </h4>
+                        {day.weather && (
+                          <div className="flex items-center space-x-2 text-sm">
+                            {day.weather.condition === 'sunny' && <Sun className={`w-4 h-4 ${isDark ? '!text-yellow-400' : 'text-yellow-500'}`} />}
+                            {day.weather.condition === 'cloudy' && <Cloud className="w-4 h-4 text-gray-400" />}
+                            {day.weather.condition === 'rainy' && <CloudRain className={`w-4 h-4 ${isDark ? '!text-blue-300' : 'text-blue-400'}`} />}
+                            {day.weather.condition === 'snowy' && <CloudSnow className={`w-4 h-4 ${isDark ? '!text-blue-200' : 'text-blue-300'}`} />}
                               <span>{day.weather.temp}°C</span>
                             </div>
                           )}
@@ -407,15 +407,15 @@ const Profile = () => {
                                     <h5 className="font-semibold text-base mb-1">{place.name}</h5>
                                     {place.address && (
                                       <p className={`text-sm flex items-start ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                                        <MapPin className="w-3 h-3 mr-1 mt-1 flex-shrink-0" />
+                                        <MapPin className={`w-3 h-3 mr-1 mt-1 flex-shrink-0 ${isDark ? '!text-blue-400' : 'text-blue-500'}`} />
                                         {place.address}
                                       </p>
                                     )}
                                   </div>
-                                  {place.rating && (
+                                  {place.rating !== undefined && place.rating !== null && (
                                     <div className="flex items-center space-x-1 ml-2">
-                                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                                      <span className="text-sm font-medium">{place.rating}</span>
+                                      <Star className={`w-4 h-4 fill-current ${isDark ? '!text-yellow-400' : 'text-yellow-500'}`} />
+                                      <span className="text-sm font-medium">{place.rating === 0 ? 'N/A' : place.rating}</span>
                                     </div>
                                   )}
                                 </div>
@@ -616,7 +616,7 @@ const Profile = () => {
 
                 {/* Danger Zone */}
                 <div className="mt-8 pt-6 border-t border-gray-300 dark:border-gray-600">
-                  <h3 className="font-medium text-red-500 mb-2">Danger Zone</h3>
+                  <h3 className={`font-medium mb-2 ${isDark ? 'text-red-400' : 'text-red-500'}`}>Danger Zone</h3>
                   <p className={`text-sm mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                     Permanently delete your account and all associated data. This action cannot be undone.
                   </p>
@@ -627,7 +627,11 @@ const Profile = () => {
                       setShowEditModal(false);
                       setShowDeleteConfirm(true);
                     }}
-                    className="w-full px-4 py-2 border-2 border-red-500 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
+                    className={`w-full px-4 py-2 border-2 rounded-lg hover:text-white transition-colors ${
+                      isDark 
+                        ? 'border-red-400 text-red-400 hover:bg-red-400' 
+                        : 'border-red-500 text-red-500 hover:bg-red-500'
+                    }`}
                   >
                     Delete Account
                   </motion.button>
@@ -648,9 +652,11 @@ const Profile = () => {
               }`}
             >
               <div className="text-center">
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                  isDark ? 'bg-red-900/50' : 'bg-red-100'
+                }`}>
                   <svg
-                    className="w-8 h-8 text-red-600"
+                    className={`w-8 h-8 ${isDark ? '!text-red-400' : 'text-red-600'}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

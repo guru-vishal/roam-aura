@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="planeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9333EA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Plane icon tilted upward (flying) with gradient - scaled up -->
+  <g transform="translate(50 50) scale(1.4) rotate(-30) translate(-50 -50)">
+    <path d="M70 35 L55 40 L45 20 L38 22 L43 45 L28 50 L24 45 L18 47 L22 55 L24 62 L32 60 L36 55 L51 50 L56 73 L63 71 L58 48 L73 43 Z" 
+          fill="url(#planeGradient)" 
+          stroke="url(#planeGradient)" 
+          stroke-width="1.5"
+          stroke-linejoin="round"
+          stroke-linecap="round"/>
+    <!-- Contrails/motion lines -->
+    <line x1="18" y1="52" x2="8" y2="55" stroke="url(#planeGradient)" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="22" y1="48" x2="12" y2="50" stroke="url(#planeGradient)" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+  </g>
+</svg>
