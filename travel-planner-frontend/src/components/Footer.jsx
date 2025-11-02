@@ -173,15 +173,15 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
               >
-                <Mail className={`w-5 h-5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+                <Mail className={`w-5 h-5 ${isDark ? '!text-blue-300' : '!text-blue-500'}`} />
                 <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>vishal3012006@gmail.com</span>
               </a>
               <div className="flex items-center space-x-3">
-                <Phone className={`w-5 h-5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+                <Phone className={`w-5 h-5 ${isDark ? '!text-blue-300' : '!text-blue-500'}`} />
                 <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>+91 95972 93169</span>
               </div>
               <div className="flex items-center space-x-3">
-                <MapPin className={`w-5 h-5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+                <MapPin className={`w-5 h-5 ${isDark ? '!text-blue-300' : '!text-blue-500'}`} />
                 <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>Coimbatore, India</span>
               </div>
             </div>

@@ -15,6 +15,17 @@ body {
   box-sizing: border-box;
 }
 
+/* Remove transition delay for color/background changes */
+* {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+*[class*="transition-colors"] {
+  transition-duration: 0ms !important;
+}
+
 /* Dark Mode Support */
 html.dark {
   color-scheme: dark;

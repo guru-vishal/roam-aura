@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      transitionDuration: {
+        '0': '0ms',
+      },
       colors: {
         primary: {
           50: '#f0f9ff',

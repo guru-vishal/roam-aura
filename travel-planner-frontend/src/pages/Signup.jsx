@@ -71,13 +71,13 @@ const Signup = () => {
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center px-4 py-12 ${isDark ? 'home-bg-dark' : 'home-bg-light'}`}>
+    <div className={`min-h-screen flex items-center justify-center px-4 py-8 backdrop-blur-md ${isDark ? 'home-bg-dark' : 'home-bg-light'}`}>
       {/* Toast Notifications */}
       <ToastContainer toasts={toasts} removeToast={removeToast} />
       
       {/* Background Animation */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className={`absolute inset-0 ${isDark ? 'bg-black/40' : 'bg-black/10'}`}></div>
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        <div className={`absolute inset-0 ${isDark ? 'bg-black/40' : 'bg-white/30'} backdrop-blur-sm`}></div>
         {/* Animated background shapes */}
         <motion.div
           animate={{ 
@@ -107,11 +107,11 @@ const Signup = () => {
         }`}
       >
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <motion.div
             whileHover={{ rotate: 360 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full mb-4"
+            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full mb-3"
           >
             <MapPin className="w-8 h-8 text-white" />
           </motion.div>
@@ -123,7 +123,7 @@ const Signup = () => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name Field */}
           <div>
             <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -227,17 +227,17 @@ const Signup = () => {
           {/* Password Validation */}
           {(formData.password || formData.confirmPassword) && (
             <div className="space-y-2">
-              <div className={`flex items-center space-x-2 text-sm ${
-                passwordValidation.length ? 'text-green-600' : 'text-gray-500'
-              }`}>
-                <Check className={`w-4 h-4 ${passwordValidation.length ? 'text-green-600' : 'text-gray-400'}`} />
-                <span>At least 6 characters</span>
+              <div className="flex items-center space-x-2 text-sm">
+                <Check className={`w-4 h-4 ${passwordValidation.length ? '!text-green-500' : 'text-gray-400'}`} />
+                <span className={passwordValidation.length ? (isDark ? 'text-green-400' : 'text-green-600') : (isDark ? 'text-gray-400' : 'text-gray-500')}>
+                  At least 6 characters
+                </span>
               </div>
-              <div className={`flex items-center space-x-2 text-sm ${
-                passwordValidation.match && formData.confirmPassword ? 'text-green-600' : 'text-gray-500'
-              }`}>
-                <Check className={`w-4 h-4 ${passwordValidation.match && formData.confirmPassword ? 'text-green-600' : 'text-gray-400'}`} />
-                <span>Passwords match</span>
+              <div className="flex items-center space-x-2 text-sm">
+                <Check className={`w-4 h-4 ${passwordValidation.match && formData.confirmPassword ? '!text-green-500' : 'text-gray-400'}`} />
+                <span className={passwordValidation.match && formData.confirmPassword ? (isDark ? 'text-green-400' : 'text-green-600') : (isDark ? 'text-gray-400' : 'text-gray-500')}>
+                  Passwords match
+                </span>
               </div>
             </div>
           )}
@@ -262,7 +262,7 @@ const Signup = () => {
         </form>
 
         {/* Login Link */}
-        <div className="mt-8 text-center">
+        <div className="mt-6 text-center">
           <p className={isDark ? 'text-gray-300' : 'text-gray-600'}>
             Already have an account?{' '}
             <Link
@@ -275,7 +275,7 @@ const Signup = () => {
         </div>
 
         {/* Back to Home */}
-        <div className="mt-4 text-center">
+        <div className="mt-3 text-center">
           <Link
             to="/"
             className={`inline-flex items-center space-x-2 text-sm px-4 py-2 rounded-lg transition-all duration-300 ${
