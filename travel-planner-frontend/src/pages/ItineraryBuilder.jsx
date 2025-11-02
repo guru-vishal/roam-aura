@@ -1183,7 +1183,9 @@ const ItineraryBuilder = () => {
               <div className={`p-4 rounded-xl ${isDark ? 'bg-gray-700' : 'bg-purple-50'}`}>
                 <Star className="w-5 h-5 text-purple-500 mb-2" />
                 <p className="text-sm opacity-70">Budget</p>
-                <p className="text-lg font-semibold">₹{selectedItinerary.budget || 'N/A'}</p>
+                <p className="text-lg font-semibold">
+                  ₹{selectedItinerary.budget ? selectedItinerary.budget.toLocaleString('en-IN') : 'N/A'}
+                </p>
               </div>
             </div>
 
