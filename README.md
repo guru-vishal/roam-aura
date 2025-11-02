@@ -72,9 +72,12 @@ A modern, responsive travel planning application built with React, TailwindCSS, 
    ```env
    PORT=5000
    NODE_ENV=development
-   MONGODB_URI=mongodb://localhost:27017/roamaura
+   FRONTEND_URL=http://localhost:5173
+   MONGODB_URI=mongodb://localhost:27017/roam-aura
    JWT_SECRET=your-super-secret-jwt-key-here
+   JWT_EXPIRES_IN=7d
    GOOGLE_PLACES_API_KEY=your-google-places-api-key
+   OPENWEATHER_API_KEY=your-openweather-api-key
    ```
 
 5. **Start the Servers**
