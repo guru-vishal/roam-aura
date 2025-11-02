@@ -11,20 +11,47 @@ class GooglePlacesAPI {
       const query = `${interest} in ${destination}`;
       const url = `${this.baseUrl}/textsearch/json`;
       
-      const response = await axios.get(url, {
-        params: {
+      let allResults = [];
+      let pageToken = null;
+      
+      // Fetch multiple pages of results (up to 3 pages = 60 results)
+      for (let page = 0; page < 3; page++) {
+        const params = {
           query: query,
           key: this.apiKey,
           type: type,
           radius: 50000 // 50km radius
+        };
+        
+        if (pageToken) {
+          params.pagetoken = pageToken;
         }
-      });
+        
+        const response = await axios.get(url, { params });
 
-      if (response.data.status !== 'OK') {
-        throw new Error(`Google Places API error: ${response.data.status}`);
+        if (response.data.status !== 'OK' && response.data.status !== 'ZERO_RESULTS') {
+          if (page === 0) {
+            throw new Error(`Google Places API error: ${response.data.status}`);
+          }
+          break; // Stop if no more results
+        }
+
+        allResults.push(...response.data.results);
+        
+        // Check if there's a next page
+        if (!response.data.next_page_token) {
+          break;
+        }
+        
+        pageToken = response.data.next_page_token;
+        
+        // Wait for next page token to become valid (required by Google API)
+        if (page < 2) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
       }
 
-      return response.data.results.slice(0, 10); // Limit to top 10 results
+      return allResults.slice(0, 40); // Return up to 40 results per interest
     } catch (error) {
       console.error('Error fetching places:', error.message);
       throw error;
@@ -94,17 +121,25 @@ class GooglePlacesAPI {
 
   // Helper function to categorize places by time of day
   categorizePlacesByTime(places) {
-    const morningTypes = ['museum', 'tourist_attraction', 'park', 'zoo'];
-    const afternoonTypes = ['restaurant', 'shopping_mall', 'store', 'amusement_park'];
-    const eveningTypes = ['night_club', 'bar', 'movie_theater', 'casino'];
+    const morningTypes = ['museum', 'tourist_attraction', 'park', 'zoo', 'aquarium', 'art_gallery', 'historical'];
+    const afternoonTypes = ['shopping_mall', 'store', 'amusement_park', 'spa', 'cafe', 'restaurant'];
+    const eveningTypes = ['night_club', 'bar', 'movie_theater', 'casino', 'bowling_alley', 'entertainment'];
 
-    return places.map(place => {
+    return places.map((place, index) => {
       let timeOfDay = 'afternoon'; // default
 
       if (place.types.some(type => morningTypes.includes(type))) {
         timeOfDay = 'morning';
       } else if (place.types.some(type => eveningTypes.includes(type))) {
         timeOfDay = 'evening';
+      }
+      
+      // If still not categorized, distribute evenly
+      if (timeOfDay === 'afternoon' && !place.types.some(type => afternoonTypes.includes(type))) {
+        const mod = index % 3;
+        if (mod === 0) timeOfDay = 'morning';
+        else if (mod === 1) timeOfDay = 'afternoon';
+        else timeOfDay = 'evening';
       }
 
       return {

@@ -51,6 +51,8 @@ const itineraryController = {
 
       // Generate daily itinerary
       const itineraryDays = [];
+      const usedPlaceIds = new Set(); // Track used places to avoid repetition
+      
       for (let i = 0; i < days && i < weatherForecast.length; i++) {
         const currentDate = new Date(start);
         currentDate.setDate(start.getDate() + i);
@@ -61,8 +63,13 @@ const itineraryController = {
         const isGoodWeather = weatherAPI.isGoodWeatherForOutdoor(dayWeather);
         const suggestedTypes = weatherAPI.suggestActivitiesByWeather(dayWeather);
         
-        // Filter places suitable for the weather
+        // Filter places suitable for the weather and not already used
         const suitablePlaces = uniquePlaces.filter(place => {
+          // Skip if already used
+          if (usedPlaceIds.has(place.place_id)) {
+            return false;
+          }
+          
           if (!isGoodWeather) {
             // Indoor activities for bad weather
             return place.types.some(type => 
@@ -72,34 +79,37 @@ const itineraryController = {
           return true;
         });
 
-        // Select 3-5 places for the day
+        // Select 6 places for the day (matching frontend schedule)
         const dayPlaces = [];
-        const placesPerDay = Math.min(5, Math.max(3, Math.floor(suitablePlaces.length / days)));
+        const placesPerDay = 6;
         
-        // Morning places (1-2)
-        const morningPlaces = suitablePlaces
-          .filter(p => p.timeOfDay === 'morning')
-          .slice(i * 2, (i * 2) + 2);
+        // Get available places by time of day (excluding already used)
+        const availableMorningPlaces = suitablePlaces.filter(p => p.timeOfDay === 'morning');
+        const availableAfternoonPlaces = suitablePlaces.filter(p => p.timeOfDay === 'afternoon');
+        const availableEveningPlaces = suitablePlaces.filter(p => p.timeOfDay === 'evening');
         
-        // Afternoon places (1-2)
-        const afternoonPlaces = suitablePlaces
-          .filter(p => p.timeOfDay === 'afternoon')
-          .slice(i * 2, (i * 2) + 2);
+        // Morning places (2 places)
+        const morningPlaces = availableMorningPlaces.slice(0, 2);
+        dayPlaces.push(...morningPlaces);
         
-        // Evening places (1)
-        const eveningPlaces = suitablePlaces
-          .filter(p => p.timeOfDay === 'evening')
-          .slice(i, i + 1);
+        // Afternoon places (2 places)
+        const afternoonPlaces = availableAfternoonPlaces.slice(0, 2);
+        dayPlaces.push(...afternoonPlaces);
+        
+        // Evening places (2 places)
+        const eveningPlaces = availableEveningPlaces.slice(0, 2);
+        dayPlaces.push(...eveningPlaces);
 
-        dayPlaces.push(...morningPlaces, ...afternoonPlaces, ...eveningPlaces);
-
-        // If not enough places, fill with remaining places
+        // If not enough places, fill with remaining unused places
         if (dayPlaces.length < placesPerDay) {
           const remainingPlaces = suitablePlaces
             .filter(p => !dayPlaces.find(dp => dp.place_id === p.place_id))
             .slice(0, placesPerDay - dayPlaces.length);
           dayPlaces.push(...remainingPlaces);
         }
+
+        // Mark these places as used
+        dayPlaces.forEach(place => usedPlaceIds.add(place.place_id));
 
         // Format places for response
         const formattedPlaces = dayPlaces.slice(0, placesPerDay).map(place => ({
@@ -109,7 +119,8 @@ const itineraryController = {
           rating: place.rating || 0,
           types: place.types || [],
           photoReference: place.photos && place.photos[0] ? place.photos[0].photo_reference : null,
-          timeOfDay: place.timeOfDay
+          timeOfDay: place.timeOfDay,
+          timeCategory: place.timeOfDay // Add timeCategory for frontend compatibility
         }));
 
         itineraryDays.push({

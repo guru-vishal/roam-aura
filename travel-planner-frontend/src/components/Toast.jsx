@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, XCircle, X } from 'lucide-react';
@@ -15,13 +16,13 @@ const Toast = ({ message, type = 'success', onClose, duration = 3000 }) => {
 
   const styles = {
     success: {
-      bg: 'bg-green-500/20 backdrop-blur-xl border-green-500/30',
-      text: 'text-green-600 dark:text-green-400',
+      bg: 'bg-green-600 dark:bg-green-500/20 backdrop-blur-xl border-green-700 dark:border-green-500/30',
+      text: 'text-white dark:text-green-400',
       icon: CheckCircle,
     },
     error: {
-      bg: 'bg-red-500/20 backdrop-blur-xl border-red-500/30',
-      text: 'text-red-600 dark:text-red-400',
+      bg: 'bg-red-600 dark:bg-red-500/20 backdrop-blur-xl border-red-700 dark:border-red-500/30',
+      text: 'text-white dark:text-red-400',
       icon: XCircle,
     },
   };
@@ -54,7 +55,7 @@ const Toast = ({ message, type = 'success', onClose, duration = 3000 }) => {
           initial={{ width: '100%' }}
           animate={{ width: '0%' }}
           transition={{ duration: duration / 1000, ease: 'linear' }}
-          className={`h-1 ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}
+          className={`h-1 ${type === 'success' ? 'bg-green-800 dark:bg-green-500' : 'bg-red-800 dark:bg-red-500'}`}
         />
       )}
     </motion.div>

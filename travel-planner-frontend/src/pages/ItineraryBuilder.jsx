@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -362,6 +363,46 @@ const ItineraryBuilder = () => {
     });
   };
 
+  // Generate time slots for places with daily activities
+  const getTimeSlot = (timeCategory, index, totalPlaces) => {
+    const allTimings = [
+      '06:30 AM',  // Wake up
+      '08:00 AM',  // Breakfast
+      '09:00 AM',  // Place 1
+      '11:00 AM',  // Place 2
+      '12:30 PM',  // Lunch
+      '02:00 PM',  // Place 3
+      '04:00 PM',  // Place 4
+      '05:00 PM',  // Snacks
+      '06:00 PM',  // Place 5
+      '08:00 PM',  // Place 6
+      '09:00 PM',  // Dinner
+      '10:00 PM'   // Return to hotel
+    ];
+
+    return allTimings[index % allTimings.length];
+  };
+
+  // Get activity labels for daily schedule
+  const getActivityLabel = (index, totalPlaces) => {
+    const labels = [
+      { icon: '🌅', text: 'Wake Up', color: 'from-orange-400 to-yellow-400' },     // Wake up - 06:30 AM
+      { icon: '🍳', text: 'Breakfast', color: 'from-yellow-400 to-orange-300' },   // Breakfast - 08:00 AM
+      { icon: '📍', text: 'Activity', color: 'from-blue-400 to-indigo-500' },      // Place 1 - 09:00 AM
+      { icon: '📍', text: 'Activity', color: 'from-blue-400 to-indigo-500' },      // Place 2 - 11:00 AM
+      { icon: '🍽️', text: 'Lunch', color: 'from-green-400 to-emerald-500' },      // Lunch - 12:30 PM
+      { icon: '📍', text: 'Activity', color: 'from-blue-400 to-indigo-500' },      // Place 3 - 02:00 PM
+      { icon: '📍', text: 'Activity', color: 'from-blue-400 to-indigo-500' },      // Place 4 - 04:00 PM
+      { icon: '☕', text: 'Snacks', color: 'from-amber-400 to-orange-400' },       // Snacks - 05:00 PM
+      { icon: '📍', text: 'Activity', color: 'from-blue-400 to-indigo-500' },      // Place 5 - 06:00 PM
+      { icon: '📍', text: 'Activity', color: 'from-blue-400 to-indigo-500' },      // Place 6 - 08:00 PM
+      { icon: '🍴', text: 'Dinner', color: 'from-purple-400 to-pink-500' },        // Dinner - 09:00 PM
+      { icon: '🏨', text: 'Return to Hotel', color: 'from-gray-400 to-gray-600' }  // Return - 10:00 PM
+    ];
+
+    return labels[index % labels.length];
+  };
+
   // Show login prompt if not authenticated
   if (!isAuthenticated) {
     return (
@@ -432,9 +473,15 @@ const ItineraryBuilder = () => {
           <h1 className={`text-4xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
             Smart Itinerary Builder
           </h1>
-          <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-            Create personalized travel plans with weather-based recommendations
-          </p>
+          <div className={`inline-block px-6 py-3 rounded-lg ${
+            isDark 
+              ? 'bg-gray-800/80 backdrop-blur-sm' 
+              : 'bg-white/90 backdrop-blur-sm shadow-md'
+          }`}>
+            <p className={`text-lg font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
+              Create personalized travel plans with weather-based recommendations
+            </p>
+          </div>
           
           {/* Toggle View Button */}
           <div className="mt-6">
@@ -454,9 +501,18 @@ const ItineraryBuilder = () => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6"
+            className={`px-6 py-4 rounded-lg mb-6 border-2 font-medium shadow-lg ${
+              isDark 
+                ? 'bg-red-900/80 border-red-500 text-red-100' 
+                : 'bg-red-100 border-red-400 text-red-900'
+            }`}
           >
-            {error}
+            <div className="flex items-center">
+              <svg className="w-5 h-5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+              <span>{error}</span>
+            </div>
           </motion.div>
         )}
 
@@ -623,7 +679,7 @@ const ItineraryBuilder = () => {
                                 ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
                                 : 'bg-gray-50 border-gray-300'
                             } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                            placeholder="e.g., Mumbai, Goa, Delhi"
+                            placeholder="Enter destination city"
                             required
                             autoComplete="off"
                           />
@@ -773,10 +829,19 @@ const ItineraryBuilder = () => {
                         onClick={() => {
                           const start = new Date(formData.startDate);
                           const end = new Date(formData.endDate);
+                          
                           if (end < start) {
                             showError('End date cannot be earlier than start date');
                             return;
                           }
+                          
+                          // Calculate trip duration
+                          const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                          if (days > 7) {
+                            showError('Maximum trip duration is 7 days. Please select a shorter date range.');
+                            return;
+                          }
+                          
                           setStep(2);
                         }}
                         disabled={!formData.destination || !formData.startDate || !formData.endDate || !formData.budget}
@@ -887,10 +952,10 @@ const ItineraryBuilder = () => {
                   >
                     <div className="text-center mb-8">
                       <div className="flex items-center justify-center space-x-2 mb-4">
-                        <Check className="w-8 h-8 text-green-500" />
+                        <Check className={`w-8 h-8 ${isDark ? '!text-green-400' : '!text-green-500'}`} />
                         <h2 className="text-2xl font-bold">Your Itinerary is Ready!</h2>
                       </div>
-                      <p className="text-gray-600">
+                      <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                         Here's your personalized travel plan for {generatedItinerary.destination}
                       </p>
                     </div>
@@ -905,7 +970,6 @@ const ItineraryBuilder = () => {
                           </p>
                         </div>
                         <div className="text-right">
-                          <div className="text-sm text-gray-500">Share ID</div>
                           <div className="font-mono text-sm">{generatedItinerary.shareId}</div>
                         </div>
                       </div>
@@ -955,49 +1019,67 @@ const ItineraryBuilder = () => {
 
                             {day.places && day.places.length > 0 && (
                               <div className="space-y-3">
-                                {day.places.map((place, placeIndex) => (
-                                  <div
-                                    key={placeIndex}
-                                    className={`p-4 rounded-lg transition-all duration-200 hover:shadow-md ${
-                                      isDark 
-                                        ? 'bg-gray-700 hover:bg-gray-650 border border-gray-600' 
-                                        : 'bg-gray-50 hover:bg-gray-100 border border-gray-300'
-                                    }`}
-                                  >
-                                    <div className="flex justify-between items-start mb-2">
-                                      <h5 className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                                        {place.name}
-                                      </h5>
-                                      {place.rating && (
-                                        <div className="flex items-center space-x-1">
-                                          <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                                          <span className={`text-sm ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
-                                            {place.rating}
+                                {/* Daily Schedule with all activities */}
+                                {Array.from({ length: 12 }).map((_, scheduleIndex) => {
+                                  const activityLabel = getActivityLabel(scheduleIndex);
+                                  // Places are at indices: 2, 3, 5, 6, 8, 9 (skipping 0=wakeup, 1=breakfast, 4=lunch, 7=snacks, 10=dinner, 11=hotel)
+                                  const placeIndices = [2, 3, 5, 6, 8, 9];
+                                  const placeIndex = placeIndices.indexOf(scheduleIndex);
+                                  const place = placeIndex !== -1 && day.places[placeIndex] ? day.places[placeIndex] : null;
+                                  const isPlaceActivity = place !== null;
+                                  
+                                  return (
+                                    <div
+                                      key={scheduleIndex}
+                                      className={`p-4 rounded-lg transition-all duration-200 hover:shadow-md ${
+                                        isDark 
+                                          ? 'bg-gray-700 hover:bg-gray-650 border border-gray-600' 
+                                          : 'bg-gray-50 hover:bg-gray-100 border border-gray-300'
+                                      }`}
+                                    >
+                                      <div className="flex justify-between items-start mb-2">
+                                        <div className="flex items-center space-x-3">
+                                          <div className={`px-3 py-1 rounded-lg font-semibold bg-gradient-to-r ${activityLabel.color} text-white shadow-md`}>
+                                            <span className="mr-2">{activityLabel.icon}</span>
+                                            {getTimeSlot(null, scheduleIndex, 12)}
+                                          </div>
+                                          <h5 className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                                            {isPlaceActivity ? place.name : activityLabel.text}
+                                          </h5>
+                                        </div>
+                                        {isPlaceActivity && place.rating && (
+                                          <div className="flex items-center space-x-1">
+                                            <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                            <span className={`text-sm ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
+                                              {place.rating}
+                                            </span>
+                                          </div>
+                                        )}
+                                      </div>
+                                      {isPlaceActivity && place.address && (
+                                        <p className={`text-sm mb-2 ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
+                                          {place.address}
+                                        </p>
+                                      )}
+                                      {isPlaceActivity && (
+                                        <div className="flex items-center justify-between">
+                                          <span className={`text-xs px-2 py-1 rounded-full ${
+                                            place.timeCategory === 'morning' ? 'bg-yellow-100 text-yellow-700' :
+                                            place.timeCategory === 'afternoon' ? 'bg-orange-100 text-orange-700' :
+                                            'bg-purple-100 text-purple-700'
+                                          }`}>
+                                            {place.timeCategory}
                                           </span>
+                                          {place.priceLevel && (
+                                            <span className={`text-sm font-medium ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                                              {'$'.repeat(place.priceLevel)}
+                                            </span>
+                                          )}
                                         </div>
                                       )}
                                     </div>
-                                    {place.address && (
-                                      <p className={`text-sm mb-2 ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
-                                        {place.address}
-                                      </p>
-                                    )}
-                                    <div className="flex items-center justify-between">
-                                      <span className={`text-xs px-2 py-1 rounded-full ${
-                                        place.timeCategory === 'morning' ? 'bg-yellow-100 text-yellow-700' :
-                                        place.timeCategory === 'afternoon' ? 'bg-orange-100 text-orange-700' :
-                                        'bg-purple-100 text-purple-700'
-                                      }`}>
-                                        {place.timeCategory}
-                                      </span>
-                                      {place.priceLevel && (
-                                        <span className={`text-sm font-medium ${isDark ? 'text-green-400' : 'text-green-600'}`}>
-                                          {'$'.repeat(place.priceLevel)}
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
-                                ))}
+                                  );
+                                })}
                               </div>
                             )}
                           </div>
@@ -1162,41 +1244,59 @@ const ItineraryBuilder = () => {
                       {/* Places */}
                       {day.places && day.places.length > 0 && (
                         <div className="space-y-3">
-                          {day.places.map((place, placeIndex) => (
-                            <div
-                              key={placeIndex}
-                              className={`p-4 rounded-lg border ${
-                                isDark 
-                                  ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600 text-white' 
-                                  : 'bg-gradient-to-r from-white to-blue-50 border-blue-100 text-gray-900'
-                              }`}
-                            >
-                              <div className="flex justify-between items-start mb-2">
-                                <div className="flex-1">
-                                  <h5 className="font-semibold text-base mb-1">{place.name}</h5>
-                                  {place.address && (
-                                    <p className={`text-sm flex items-start ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                                      <MapPin className="w-3 h-3 mr-1 mt-1 flex-shrink-0" />
-                                      {place.address}
-                                    </p>
+                          {/* Daily Schedule with all activities */}
+                          {Array.from({ length: 12 }).map((_, scheduleIndex) => {
+                            const activityLabel = getActivityLabel(scheduleIndex);
+                            // Places are at indices: 2, 3, 5, 6, 8, 9 (skipping 0=wakeup, 1=breakfast, 4=lunch, 7=snacks, 10=dinner, 11=hotel)
+                            const placeIndices = [2, 3, 5, 6, 8, 9];
+                            const placeIndex = placeIndices.indexOf(scheduleIndex);
+                            const place = placeIndex !== -1 && day.places[placeIndex] ? day.places[placeIndex] : null;
+                            const isPlaceActivity = place !== null;
+                            
+                            return (
+                              <div
+                                key={scheduleIndex}
+                                className={`p-4 rounded-lg border ${
+                                  isDark 
+                                    ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600 text-white' 
+                                    : 'bg-gradient-to-r from-white to-blue-50 border-blue-100 text-gray-900'
+                                }`}
+                              >
+                                <div className="flex justify-between items-start mb-2">
+                                  <div className="flex items-center space-x-3 flex-1">
+                                    <div className={`px-2 py-1 rounded-lg font-semibold text-sm bg-gradient-to-r ${activityLabel.color} text-white shadow-md`}>
+                                      <span className="mr-2">{activityLabel.icon}</span>
+                                      {getTimeSlot(null, scheduleIndex, 12)}
+                                    </div>
+                                    <div className="flex-1">
+                                      <h5 className="font-semibold text-base mb-1">
+                                        {isPlaceActivity ? place.name : activityLabel.text}
+                                      </h5>
+                                      {isPlaceActivity && place.address && (
+                                        <p className={`text-sm flex items-start ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                                          <MapPin className="w-3 h-3 mr-1 mt-1 flex-shrink-0" />
+                                          {place.address}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </div>
+                                  {isPlaceActivity && place.rating && (
+                                    <div className="flex items-center space-x-1 ml-2">
+                                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                                      <span className="text-sm font-medium">{place.rating}</span>
+                                    </div>
                                   )}
                                 </div>
-                                {place.rating && (
-                                  <div className="flex items-center space-x-1 ml-2">
-                                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                                    <span className="text-sm font-medium">{place.rating}</span>
-                                  </div>
+                                {isPlaceActivity && place.timeOfDay && (
+                                  <span className={`inline-block px-2 py-1 text-xs rounded-full ${
+                                    isDark ? 'bg-blue-900 text-blue-200' : 'bg-blue-100 text-blue-700'
+                                  }`}>
+                                    {place.timeOfDay}
+                                  </span>
                                 )}
                               </div>
-                              {place.timeOfDay && (
-                                <span className={`inline-block px-2 py-1 text-xs rounded-full ${
-                                  isDark ? 'bg-blue-900 text-blue-200' : 'bg-blue-100 text-blue-700'
-                                }`}>
-                                  {place.timeOfDay}
-                                </span>
-                              )}
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       )}
                     </motion.div>
