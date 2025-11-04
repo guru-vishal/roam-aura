@@ -89,7 +89,7 @@ A modern, full-stack travel planning application built with React, TailwindCSS, 
    # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/roam-aura
    
    # JWT Configuration
-                                                                              QQ          1`JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+   JWT_SECRET=your-jwt-secret-key-here
    JWT_EXPIRES_IN=7d
    
    # API Keys
